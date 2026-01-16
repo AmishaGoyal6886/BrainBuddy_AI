@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../services/user_data_service.dart';
 import 'profile_screen.dart';
+import 'reports_screen.dart';
+import 'subject_detail_screen.dart';
 
 class StudentDashboardScreen extends StatefulWidget {
   const StudentDashboardScreen({super.key});
@@ -380,7 +382,15 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
         unselectedItemColor: Colors.grey,
         currentIndex: 0,
         onTap: (index) {
-          if (index == 4) {
+          if (index == 3) {
+            // Reports tab
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const ReportsScreen(),
+              ),
+            );
+          } else if (index == 4) {
             // Profile tab
             Navigator.push(
               context,
@@ -404,7 +414,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
             label: "Navigator",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_events),
+            icon: Icon(Icons.bar_chart),
             label: "Reports",
           ),
           BottomNavigationBarItem(
@@ -496,47 +506,57 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
     final isPhysics = subject.toLowerCase() == "physics";
     final isMath = subject.toLowerCase() == "mathematics" || subject.toLowerCase() == "math";
 
-    return Container(
-      width: 140,
-      margin: EdgeInsets.only(right: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: isPhysics ? null : Colors.white,
-        gradient: isPhysics ? const LinearGradient(
-          colors: [
-            Color(0xFF6A5AE0),
-            Color(0xFF8E7BFF),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => SubjectDetailScreen(subjectName: subject),
+          ),
+        );
+      },
+      child: Container(
+        width: 140,
+        margin: EdgeInsets.only(right: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isPhysics ? null : Colors.white,
+          gradient: isPhysics ? const LinearGradient(
+            colors: [
+              Color(0xFF6A5AE0),
+              Color(0xFF8E7BFF),
+            ],
+          ) : null,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color: isPhysics ? Colors.amber : (isMath ? Colors.grey.shade700 : const Color(0xFF6A5AE0)),
+              size: 32,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              subject,
+              style: TextStyle(
+                color: isPhysics ? Colors.white : Colors.black87,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              "${index == 0 ? 12 : 10 + index} chapters",
+              style: TextStyle(
+                color: isPhysics ? Colors.white70 : Colors.black54,
+                fontSize: 12,
+              ),
+            ),
           ],
-        ) : null,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            color: isPhysics ? Colors.amber : (isMath ? Colors.grey.shade700 : const Color(0xFF6A5AE0)),
-            size: 32,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            subject,
-            style: TextStyle(
-              color: isPhysics ? Colors.white : Colors.black87,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            "${index == 0 ? 12 : 10 + index} chapters",
-            style: TextStyle(
-              color: isPhysics ? Colors.white70 : Colors.black54,
-              fontSize: 12,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

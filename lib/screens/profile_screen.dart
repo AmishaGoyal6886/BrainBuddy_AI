@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/user_data_service.dart';
 import 'onboarding_name_screen.dart';
 import 'student_dashboard_screen.dart';
+import 'reports_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -319,6 +320,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           if (index == 0) {
             // Home tab - navigate back to dashboard
             Navigator.pop(context);
+          } else if (index == 3) {
+            // Reports tab
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ReportsScreen()),
+            );
           }
           // Profile tab (index 4) is already active, no action needed
         },
@@ -336,7 +343,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             label: "Navigator",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_events),
+            icon: Icon(Icons.bar_chart),
             label: "Reports",
           ),
           BottomNavigationBarItem(
