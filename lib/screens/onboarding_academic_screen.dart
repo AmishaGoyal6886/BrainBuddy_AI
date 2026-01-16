@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'onboarding_subjects_screen.dart';
+import '../services/user_data_service.dart';
 
 class OnboardingAcademicScreen extends StatefulWidget {
   const OnboardingAcademicScreen({super.key});
@@ -231,14 +232,19 @@ class _OnboardingAcademicScreenState
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: isEnabled
-                      ? () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) =>
-                        const OnboardingSubjectsScreen(),
-                      ),
-                    );
+                      ? () async {
+                    // Save academic info
+                    await UserDataService.saveUserClass(selectedClass!);
+                    await UserDataService.saveUserBoard(selectedBoard!);
+                    if (context.mounted) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                          const OnboardingSubjectsScreen(),
+                        ),
+                      );
+                    }
                   }
                       : null,
                   style: ElevatedButton.styleFrom(

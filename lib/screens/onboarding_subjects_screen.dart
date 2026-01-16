@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'student_dashboard_screen.dart';
+import '../services/user_data_service.dart';
 
 class OnboardingSubjectsScreen extends StatefulWidget {
   const OnboardingSubjectsScreen({super.key});
@@ -168,8 +170,19 @@ class _OnboardingSubjectsScreenState
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: isEnabled
-                      ? () {
-                    // FINAL: Go to Student Home
+                      ? () async {
+                    // Save selected subjects
+                    await UserDataService.saveUserSubjects(
+                        selectedSubjects.toList());
+                    if (context.mounted) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const StudentDashboardScreen(),
+                        ),
+                        (route) => false,
+                      );
+                    }
                   }
                       : null,
                   style: ElevatedButton.styleFrom(

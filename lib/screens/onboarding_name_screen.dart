@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'onboarding_academic_screen.dart';
+import '../services/user_data_service.dart';
 
 class OnboardingNameScreen extends StatefulWidget {
   const OnboardingNameScreen({super.key});
@@ -107,14 +108,19 @@ class _OnboardingNameScreenState extends State<OnboardingNameScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: isEnabled
-                      ? () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) =>
-                        const OnboardingAcademicScreen(),
-                      ),
-                    );
+                      ? () async {
+                    // Save the name
+                    await UserDataService.saveUserName(
+                        _nameController.text.trim());
+                    if (context.mounted) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                          const OnboardingAcademicScreen(),
+                        ),
+                      );
+                    }
                   }
                       : null,
                   style: ElevatedButton.styleFrom(
